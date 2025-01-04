@@ -55,7 +55,9 @@ taskRouter.post('/', (req, res) => taskController.createTask(req, res));
  *     summary: Retrieve all tasks
  *     tags: [Tasks]
  */
-taskRouter.get('/', (req, res) => taskController.getTasks(req, res));
+taskRouter.get('/user/:userId', (req, res) =>
+  taskController.getTasks(req, res)
+);
 
 /**
  * @swagger

@@ -4,8 +4,8 @@ import { FirestoreTaskRepository } from '@infrastructure/firebase/firestore-task
 export class GetTasks {
   constructor(private readonly taskRepository: FirestoreTaskRepository) {}
 
-  async execute(): Promise<Task[]> {
-    return await this.taskRepository.getAll();
+  async execute(userId: string): Promise<Task[]> {
+    return await this.taskRepository.getTasksFromUser(userId);
   }
 }
 

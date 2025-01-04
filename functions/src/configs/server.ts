@@ -11,7 +11,7 @@ export class Server {
 
   private constructor(logger: LoggerClient) {
     this.app = express();
-    this.port = 9999;
+    this.port = 9997;
     this.logger = logger;
     this.middlewares();
   }

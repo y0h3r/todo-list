@@ -10,7 +10,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:9999',
+        url: 'http://localhost:9997',
       },
     ],
   },

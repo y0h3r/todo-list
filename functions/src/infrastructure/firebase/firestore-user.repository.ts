@@ -45,12 +45,13 @@ export class FirestoreUserRepository implements BaseRepository<User> {
       this.logger.debug(
         `FirestoreUserRepository - getByEmail: Start with id: ${email}`
       );
-      const doc = await this.firestore
+      const docs = await this.firestore
         .collection(this.COLLECTION_NAME)
-        .doc(email)
+        .where('email', '==', email)
+        .limit(1)
         .get();
 
-      if (!doc.exists) {
+      if (docs.empty) {
         this.logger.info(
           `FirestoreUserRepository - getByEmail: User not found for id: ${email}`
         );
@@ -60,7 +61,10 @@ export class FirestoreUserRepository implements BaseRepository<User> {
       this.logger.debug(
         'FirestoreUserRepository - getByEmail: Finish successfully'
       );
-      return { ...(doc.data() as User) };
+      const doc = docs.docs[0];
+      const data = doc.data();
+      const id = doc.id;
+      return { id, ...data } as User;
     } catch (error) {
       this.logger.error(
         'FirestoreUserRepository - getByEmail: finish with error',

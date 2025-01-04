@@ -18,11 +18,12 @@ export class TaskController {
 
   async createTask(req: Request, res: Response): Promise<void> {
     try {
-      const { title, description } = req.body;
+      const { title, description, user } = req.body;
       const createTask = new CreateTask(this.taskRepository);
       const task = await createTask.execute({
         title,
         description,
+        user,
         completed: false,
       });
       res.status(201).json(task);
@@ -35,7 +36,7 @@ export class TaskController {
   async updateTask(req: Request, res: Response): Promise<void> {
     try {
       const { title, description, user, completed } = req.body;
-      const { id: taskId } = req.params;
+      const { taskId } = req.params;
 
       const getTask = new UpdateTask(this.taskRepository);
       const task = await getTask.execute(taskId, {
@@ -73,8 +74,9 @@ export class TaskController {
 
   async getTasks(req: Request, res: Response): Promise<void> {
     try {
+      const { userId } = req.params;
       const getTask = new GetTasks(this.taskRepository);
-      const task = await getTask.execute();
+      const task = await getTask.execute(userId.toString());
 
       if (!task) {
         res.status(404).json({ message: 'Task not found' });

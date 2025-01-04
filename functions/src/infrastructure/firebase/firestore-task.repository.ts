@@ -11,13 +11,16 @@ import { LoggerClient } from '@shared/logger/client';
 import { Task } from '@domain/entities/task';
 
 export class FirestoreTaskRepository implements BaseRepository<Task> {
-  private readonly COLLECTION_NAME = 'users';
+  private readonly COLLECTION_NAME = 'tasks';
   private firestore: Firestore;
   private logger: LoggerClient;
 
   constructor(firestore: Firestore, logger: LoggerClient) {
     this.firestore = firestore;
     this.logger = logger;
+  }
+  getAll(): Promise<Task[]> {
+    throw new Error('Method not implemented.');
   }
 
   async create(entity: Omit<Task, 'id'>): Promise<Task> {
@@ -72,11 +75,12 @@ export class FirestoreTaskRepository implements BaseRepository<Task> {
     }
   }
 
-  async getAll(): Promise<Task[]> {
+  async getTasksFromUser(userId: string): Promise<Task[]> {
     try {
       this.logger.debug('FirestoreTaskRepository - getAll: Start');
       const snapshot = await this.firestore
         .collection(this.COLLECTION_NAME)
+        .where('user', '==', userId)
         .get();
 
       const tasks = snapshot.docs.map((doc) => ({

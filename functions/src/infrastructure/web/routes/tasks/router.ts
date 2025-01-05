@@ -4,7 +4,7 @@ import { Router as router } from 'express';
 import { FirestoreTaskRepository } from '@infrastructure/firebase/firestore-task.repository';
 import { TaskController } from '@infrastructure/web/routes/tasks/controller';
 import { FirestoreConnection } from '@shared/firestore';
-import { FirebaseLogger } from '@shared/logger/firebase-logger.client';
+import { YoherLogger } from '@shared/logger/yoher-logger.client';
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -19,7 +19,7 @@ if (!admin.apps.length) {
 
 const taskRouter = router();
 const firestore = FirestoreConnection.getInstance(admin.app());
-const logger = new FirebaseLogger();
+const logger = new YoherLogger();
 const taskRepository = new FirestoreTaskRepository(
   firestore.getFirestore(),
   logger
